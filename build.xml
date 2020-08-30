@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<project name="Kong Service" default="tar">
+
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="build.version" value="1.0.0"/>
+    <property name="final.name" value="kong"/>
+    <property name="final.path" value="${build.dir}/${final.name}"/>
+    <property name="version.file" value="${build.dir}/${final.name}/version.sh"/>
+    <property name="plugin.path" value="${final.path}/custom-plugins"/>
+
+    <target name="tar" depends="clean">
+        <!-- 创建目录 -->
+        <mkdir dir="${build.dir}"></mkdir>
+        <mkdir dir="${final.path}"></mkdir>
+        <mkdir dir="${plugin.path}"></mkdir>
+        <copydir src="${basedir}/src/kong" dest="${plugin.path}/kong"></copydir>
+        <copydir src="${basedir}/src/utils" dest="${plugin.path}/utils"></copydir>
+        <copydir src="${basedir}/workdir" dest="${final.path}/workdir"></copydir>
+        <touch file="${version.file}"></touch>
+        <echo message="version=${build.version};echo $${version}" output="${version.file}"></echo>
+
+        <tar compression="gzip" longfile="gnu" destfile="${build.dir}/${final.name}-${build.version}.tar.gz">
+            <tarfileset dir="${final.path}" filemode="777">
+                <include name="custom-plugins/**"/>
+                <include name="workdir/**"/>
+                <include name="*.sh"/>
+            </tarfileset>
+        </tar>
+
+        <delete dir="${build.dir}/${final.name}"></delete>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"></delete>
+    </target>
+
+</project>

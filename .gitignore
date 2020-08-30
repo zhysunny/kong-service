@@ -28,5 +28,6 @@ hs_err_pid*
 *.iml
 logs
 target/
+build/
 dependency-reduced-pom.xml
 
