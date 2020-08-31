@@ -86,6 +86,6 @@ end
 
 -- This module needs to return the created table, so that Kong
 -- can execute those functions.
+CustomHandler.PRIORITY = 10
 return CustomHandler
 
-CustomHandler.PRIORITY = 10
