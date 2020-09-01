@@ -16,6 +16,7 @@ services:
     - kong-net
     environment:
       KONG_PREFIX: /opt/kong/kong/workdir
+      KONG_LOG_LEVEL: info
       KONG_PLUGINS: bundled,my-custom-plugin
       KONG_LUA_PACKAGE_PATH: /opt/kong/kong/custom-plugins/?.lua;/opt/kong/kong/custom-plugins/?/init.lua;
       KONG_DATABASE: postgres
@@ -31,8 +32,8 @@ services:
       retries: 15
     ports:
     - "8001:8001"
-    - "8080:8080"
-    - "8443:8443"
+    - "80:8080"
+    - "443:8443"
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /opt/kong/kong:/opt/kong/kong

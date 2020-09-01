@@ -5,9 +5,10 @@
 ---
 
 local BasePlugin = require "kong.plugins.base_plugin"
+local json = require "cjson.safe"
 local CustomHandler = BasePlugin:extend()
 
-CustomHandler.VERSION  = "1.0.0"
+CustomHandler.VERSION = "1.0.0"
 CustomHandler.PRIORITY = 10
 
 
@@ -15,32 +16,31 @@ CustomHandler.PRIORITY = 10
 -- Base Plugin handler, it's only role is to instantiate itself
 -- with a name. The name is your plugin name as it will be printed in the logs.
 function CustomHandler:new()
-    CustomHandler.super.new(self, "my_custom_plugin")
+    CustomHandler.super.new(self, "my-custom-plugin")
+    kong.log.info("new")
 end
 
 function CustomHandler:init_worker()
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.init_worker(self)
-
+    kong.log.info("init_worker")
     -- Implement any custom logic here
 end
-
 
 function CustomHandler:preread(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.preread(self)
-
+    kong.log.info("preread, config = ", json.encode(config))
     -- Implement any custom logic here
 end
-
 
 function CustomHandler:certificate(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.certificate(self)
-
+    kong.log.info("certificate, config = ", json.encode(config))
     -- Implement any custom logic here
 end
 
@@ -48,7 +48,7 @@ function CustomHandler:rewrite(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.rewrite(self)
-
+    kong.log.info("rewrite, config = ", json.encode(config))
     -- Implement any custom logic here
 end
 
@@ -56,7 +56,7 @@ function CustomHandler:access(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.access(self)
-
+    kong.log.info("access, config = ", json.encode(config))
     -- Implement any custom logic here
 end
 
@@ -64,7 +64,7 @@ function CustomHandler:header_filter(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.header_filter(self)
-
+    kong.log.info("header_filter, config = ", json.encode(config))
     -- Implement any custom logic here
 end
 
@@ -72,7 +72,7 @@ function CustomHandler:body_filter(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.body_filter(self)
-
+    kong.log.info("body_filter, config = ", json.encode(config))
     -- Implement any custom logic here
 end
 
@@ -80,12 +80,11 @@ function CustomHandler:log(config)
     -- Eventually, execute the parent implementation
     -- (will log that your plugin is entering this context)
     CustomHandler.super.log(self)
-
+    kong.log.info("log, config = ", json.encode(config))
     -- Implement any custom logic here
 end
 
 -- This module needs to return the created table, so that Kong
 -- can execute those functions.
-CustomHandler.PRIORITY = 10
 return CustomHandler
 
