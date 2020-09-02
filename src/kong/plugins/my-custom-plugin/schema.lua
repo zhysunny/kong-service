@@ -3,36 +3,32 @@
 --- Created by 叶子.
 --- DateTime: 2020/8/31 0:00
 ---
-local typedefs = require "kong.db.schema.typedefs"
 
 return {
     name = "my-custom-plugin",
     fields = {
         {
-            -- this plugin will only be applied to Services or Routes
-            consumer = typedefs.no_consumer
-        },
-        {
-            -- this plugin will only be executed on the first Kong node
-            -- if a request comes from a service mesh (when acting as
-            -- a non-service mesh gateway, the nodes are always considered
-            -- to be "first".
-            run_on = typedefs.run_on_first
-        },
-        {
-            -- this plugin will only run within Nginx HTTP module
-            protocols = typedefs.protocols_http
-        },
-        {
             config = {
                 type = "record",
                 fields = {
-                    -- Describe your plugin's configuration's schema here.
-                },
-            },
-        },
-    },
-    entity_checks = {
-        -- Describe your plugin's entity validation rules
-    },
+                    { some_boolean = { type = "boolean", required = true, default = true } },
+                    { some_set = { type = "set", required = true, elements = { type = "string", one_of = { "GET", "POST" } } } },
+                    { some_array = { type = "array", elements = { type = "string", one_of = { "GET", "POST" } } } },
+                    { some_string = { type = "string", required = true, default = "string", len_min = 3, len_max = 10 } },
+                    { some_integer = { type = "integer", required = true, default = 6, gt = 5 } },
+                    { some_number = { type = "number", required = true, default = 7.0, gt = 5.0 } },
+                    {
+                        some_record = {
+                            type = "record",
+                            fields = {
+                                { key1 = { type = "string", required = true } },
+                                { key2 = { type = "integer", required = true } },
+                                { key3 = { type = "number", required = true } },
+                            }
+                        }
+                    },
+                }
+            }
+        }
+    }
 }

@@ -17,6 +17,7 @@
         <copydir src="${basedir}/src/kong" dest="${plugin.path}/kong"></copydir>
         <copydir src="${basedir}/src/utils" dest="${plugin.path}/utils"></copydir>
         <copydir src="${basedir}/workdir" dest="${final.path}/workdir"></copydir>
+        <copydir src="${basedir}/bin" dest="${final.path}/bin"></copydir>
         <touch file="${version.file}"></touch>
         <echo message="version=${build.version};echo $${version}" output="${version.file}"></echo>
 
@@ -24,6 +25,7 @@
             <tarfileset dir="${final.path}" filemode="777">
                 <include name="custom-plugins/**"/>
                 <include name="workdir/**"/>
+                <include name="bin/**"/>
                 <include name="*.sh"/>
             </tarfileset>
         </tar>
